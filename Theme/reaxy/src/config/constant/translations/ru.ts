@@ -1,0 +1,51 @@
+export default {
+  general: {
+    logOut: "Выход",
+    sections: "Разделы",
+    staticFieldsLabel: "Поля",
+    dynamicFieldsLabel: "Переводы",
+    cancel: "Отмена",
+    save: "Сохранить",
+    search: "Поиск",
+    reset: "Сбросить",
+    detailedSearch: "Подробный поиск",
+    yes: "Да",
+    no: "Нет",
+    createTitle: "Добавить новое",
+    updateTitle: "Изменить",
+    noOptions: "Нет результатов",
+    errorMessage: "Произошла ошибка. Пожалуйста, обновите страницу.",
+    copyText: "Текст успешно скопирован!",
+    copyTheText: "Скопировать текст",
+    textCopied: "Текст был скопирован",
+    open: "Открыть",
+    close: "Закрыть",
+    more: "Дополнительная информация",
+    back: "Назад",
+    tooltip: {
+      edit: "Редактировать",
+      delete: "Удалить",
+    },
+    notification: {
+      success: "Успешная операция",
+      error: "Произошла ошибка",
+    },
+    form: {
+      empty: "Выбора нет",
+    },
+    table: {
+      name: "Название",
+      actions: "Действия",
+      noData: "В настоящее время нет информации для отображения",
+    },
+    modal: {
+      alert: {
+        title: "Предупреждение",
+        description: "Вы уверены, что хотите удалить данные?",
+      },
+    },
+    organization: "Организовано",
+    organizationName: "Разработчик фронтенда",
+    loading: "Загрузка...",
+  },
+};

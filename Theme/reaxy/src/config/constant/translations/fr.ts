@@ -1,0 +1,51 @@
+export default {
+  general: {
+    logOut: "Déconnexion",
+    sections: "Sections",
+    staticFieldsLabel: "Champs statiques",
+    dynamicFieldsLabel: "Champs dynamiques",
+    cancel: "Annuler",
+    save: "Enregistrer",
+    search: "Rechercher",
+    reset: "Réinitialiser",
+    detailedSearch: "Recherche détaillée",
+    yes: "Oui",
+    no: "Non",
+    createTitle: "Ajouter",
+    updateTitle: "Modifier",
+    noOptions: "Aucune option",
+    errorMessage: "Une erreur s'est produite. Veuillez rafraîchir la page.",
+    copyText: "Texte copié avec succès!",
+    copyTheText: "Copier le texte",
+    textCopied: "Le texte a été copié",
+    open: "Ouvrir",
+    close: "Fermer",
+    more: "Plus d'informations",
+    back:"Retour",
+    tooltip: {
+      edit: "Modifier",
+      delete: "Supprimer",
+    },
+    notification: {
+      success: "Opération réussie",
+      error: "Une erreur s'est produite",
+    },
+    form: {
+      empty: "Pas de sélection",
+    },
+    table: {
+      name: "Nom",
+      actions: "Actions",
+      noData: "Aucune donnée disponible actuellement",
+    },
+    modal: {
+      alert: {
+        title: "Attention",
+        description: "Êtes-vous sûr de vouloir supprimer les informations ?",
+      },
+    },
+    organization: "Organisé",
+    organizationName: "Développeur Front-End",
+    loading: "Chargement...",
+  },
+};
