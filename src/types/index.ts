@@ -1,54 +1,58 @@
-// Define all our interfaces/types
-export interface Token {
+export interface Trade {
   mint: string;
-  name: string;
   price: number;
-  sol_amount: number;
-  usd_market_cap: number;
-  score?: number;
-}
-
-export interface WhaleActivity {
-  id: string;
+  volume_24h?: number;
+  usd_market_cap?: number;
+  uniqueBuyers?: number;
   timestamp: number;
   type: 'buy' | 'sell';
-  token: string;
-  amount: number;
-  price: number;
-  wallet: string;
-  value: number;
 }
 
-export interface TopCardsData {
-  hottest: Token[];
-  newest: Token[];
-  biggestGains: Token[];
-}
-
-export interface TokenState {
-  lastTrade?: number;
-  volume_24h?: number;
-}
-
-export interface Trade {
+export interface TokenData {
   symbol: string;
   name: string;
-  sol_amount: number;
-  token_amount: number;
-  is_buy: boolean;
-  usd_market_cap?: number;
-  volume_24h?: number;
-  birdeye_price?: number;
-  dexscreener_price?: number;
-  timestamp: number;
+  mint: string;
+  price: number;
+  change24h: number;
+  volume: number;
+  marketCap: number;
+  hotnessScore: number;
 }
 
-// Add shared types
-export interface TradeMode {
-  type: 'degen' | 'normie';
-  settings: {
-    minMarketCap: number;
-    maxRisk: number;
-    timeWindow: number;
+export interface Analysis {
+  score: number;
+  signals: string[];
+  risk: number;
+  momentum: number;
+  socialSignals: SocialSignals;
+}
+
+export interface SocialSignals {
+  twitter: number;
+  telegram: number;
+  discord: number;
+}
+
+export interface TokenMetrics {
+  price: number[];
+  volume: number[];
+  buyers: number[];
+  timestamps: number[];
+}
+
+export interface HotnessScore {
+  total: number;
+  components: {
+      volume: number;
+      price: number;
+      social: number;
+      whales: number;
   };
 }
+
+export type TradeHistory = {
+  price: number;
+  volume: number;
+  timestamp: number;
+  type: 'buy' | 'sell';
+};
