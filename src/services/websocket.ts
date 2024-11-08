@@ -1,92 +1,73 @@
-export class WebSocketService {
+import { TokenData, WhaleActivity } from '../types/common';
+
+class WebSocketService {
   private ws: WebSocket | null = null;
   private reconnectAttempts = 0;
   private maxReconnectAttempts = 5;
-  private mode: 'degen' | 'normie' = 'normie';
 
-  connect() {
+  connect(url: string): void {
     try {
-      this.ws = new WebSocket(import.meta.env.VITE_WS_URL);
-      
-      this.ws.onopen = () => {
-        console.log('WebSocket Connected');
-        this.reconnectAttempts = 0;
-      };
-
-      this.ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        // Handle different message types
-        this.handleMessage(data);
-      };
-
-      this.ws.onclose = () => {
-        console.log('WebSocket Disconnected');
-        this.attemptReconnect();
-      };
-
+      this.ws = new WebSocket(url);
+      this.setupEventHandlers();
     } catch (error) {
-      console.error('WebSocket connection error:', error);
+      console.error('WebSocket connection failed:', error);
+      this.handleReconnect();
     }
   }
 
-  private handleMessage(data: any) {
-    switch (data.type) {
-      case 'NEW_TOKEN':
-        this.handleNewToken(data.token);
-        break;
-      case 'EARLY_BUYERS':
-        this.handleEarlyBuyers(data.buyers);
-        break;
-      case 'CREATOR_ACTIVITY':
-        this.handleCreatorActivity(data.activity);
-        break;
-      case 'SOCIAL_UPDATE':
-        this.handleSocialUpdate(data.update);
-        break;
-    }
-  }
+  private setupEventHandlers(): void {
+    if (!this.ws) return;
 
-  private handleNewToken(token: any) {
-    // Instant analysis of new tokens
-    // Quick risk assessment
-  }
-
-  private attemptReconnect() {
-    if (this.reconnectAttempts < this.maxReconnectAttempts) {
-      setTimeout(() => {
-        this.reconnectAttempts++;
-        this.connect();
-      }, 1000 * Math.pow(2, this.reconnectAttempts));
-    }
-  }
-
-  filterTradesByMode(trades: Trade[], mode: 'degen' | 'normie') {
-    if (mode === 'degen') {
-      return trades.filter(t => t.marketCap < 100000); // Micro caps
-    }
-    return trades.filter(t => t.marketCap > 100000); // Established tokens
-  }
-
-  setMode(mode: 'degen' | 'normie') {
-    this.mode = mode;
-  }
-
-  handleMessage(data: string) {
-    if (data.startsWith('42["tradeCreated"')) {
-      const [, trade] = JSON.parse(data.slice(2));
-      
-      // Apply mode-specific filtering
-      if (this.shouldProcessTrade(trade)) {
-        this.processTrade(trade);
+    this.ws.onmessage = (event: MessageEvent) => {
+      try {
+        const data = JSON.parse(event.data);
+        this.handleMessage(data);
+      } catch (error) {
+        console.error('Error parsing WebSocket message:', error);
       }
+    };
+
+    this.ws.onerror = (error: Event) => {
+      console.error('WebSocket error:', error);
+      this.handleReconnect();
+    };
+
+    this.ws.onclose = () => {
+      console.log('WebSocket connection closed');
+      this.handleReconnect();
+    };
+  }
+
+  private handleMessage(data: TokenData | WhaleActivity): void {
+    // Handle different message types
+    if ('holders' in data) {
+      // Handle TokenData
+      this.handleTokenUpdate(data as TokenData);
+    } else if ('walletAddress' in data) {
+      // Handle WhaleActivity
+      this.handleWhaleActivity(data as WhaleActivity);
     }
   }
 
-  private shouldProcessTrade(trade: any): boolean {
-    if (this.mode === 'degen') {
-      return trade.usd_market_cap < 250_000;
-    } else {
-      return trade.usd_market_cap > 250_000;
+  private handleTokenUpdate(data: TokenData): void {
+    // Implement token update logic
+    console.log('Token update received:', data);
+  }
+
+  private handleWhaleActivity(data: WhaleActivity): void {
+    // Implement whale activity logic
+    console.log('Whale activity detected:', data);
+  }
+
+  private handleReconnect(): void {
+    if (this.reconnectAttempts < this.maxReconnectAttempts) {
+      this.reconnectAttempts++;
+      setTimeout(() => {
+        console.log(`Attempting to reconnect (${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
+        // Implement reconnection logic
+      }, 5000 * this.reconnectAttempts);
     }
   }
-} 
+}
+
+export const websocketService = new WebSocketService();

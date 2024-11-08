@@ -1,33 +1,23 @@
+import { useState } from 'react';
 import { Box } from '@mui/material';
-import { Header } from './Header';
 import { Sidebar } from './Sidebar';
+import { Outlet } from 'react-router-dom';
 
-interface MainLayoutProps {
-  children: React.ReactNode;
-}
+export const MainLayout = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
-export const MainLayout = ({ children }: MainLayoutProps) => {
   return (
-    <Box sx={{ 
-      display: 'flex',
-      minHeight: '100vh',
-      backgroundColor: 'background.default'
-    }}>
-      <Sidebar />
-      <Box sx={{ 
-        flexGrow: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden'
-      }}>
-        <Header />
-        <Box component="main" sx={{ 
+    <Box sx={{ display: 'flex' }}>
+      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <Box
+        component="main"
+        sx={{
           flexGrow: 1,
           p: 3,
-          overflow: 'auto'
-        }}>
-          {children}
-        </Box>
+          width: { sm: `calc(100% - ${sidebarOpen ? 240 : 0}px)` }
+        }}
+      >
+        <Outlet />
       </Box>
     </Box>
   );

@@ -1,19 +1,21 @@
 import axios from 'axios';
+import { TokenData, Trade, WhaleActivity } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
-
-export const api = axios.create({
-  baseURL: API_BASE_URL,
-  timeout: 10000,
+const api = axios.create({
+  baseURL: 'https://frontend-api.pump.fun'
 });
 
-export const endpoints = {
-  tokens: {
-    list: '/tokens',
-    hottest: '/tokens/hottest',
-    newest: '/tokens/newest',
-    biggestGains: '/tokens/biggest-gains',
-    details: (id: string) => `/tokens/${id}`,
-  },
-  whaleActivity: '/whale-activity',
+export const fetchTokens = async (): Promise<TokenData[]> => {
+  const { data } = await api.get('/tokens');
+  return data;
+};
+
+export const fetchTrades = async (mint: string): Promise<Trade[]> => {
+  const { data } = await api.get(`/trades/${mint}`);
+  return data;
+};
+
+export const fetchWhaleActivity = async (): Promise<WhaleActivity[]> => {
+  const { data } = await api.get('/whales');
+  return data;
 }; 

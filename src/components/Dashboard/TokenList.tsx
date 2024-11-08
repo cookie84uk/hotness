@@ -1,20 +1,22 @@
-import { Box, Typography, styled } from '@mui/material';
+import { themeConfig } from '../../constants';
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Token } from '../../types';
 
-// Styled components based on Reaxy's design
-const TokenCard = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(1.5),
-  backgroundColor: themeConfig.dark.paper,
-  borderBottom: `1px solid ${theme.palette.divider}`,
-  '&:hover': {
-    backgroundColor: themeConfig.dark.default,
-  },
-}));
+interface TokenListProps {
+  tokens: Token[];
+  onPaperTrade?: (token: Token) => void;
+}
 
-const TokenName = styled(Typography)(({ theme }) => ({
-  fontSize: '0.875rem',
-  fontWeight: 700,
-  color: '#FFFFFF',
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.spacing(0.5),
-})); 
+export const TokenList = ({ tokens, onPaperTrade }: TokenListProps) => {
+  return (
+    <Box sx={{ 
+      backgroundColor: themeConfig.dark.paper,
+      borderRadius: 1,
+      overflow: 'hidden'
+    }}>
+      <TableContainer>
+        {/* Your table content */}
+      </TableContainer>
+    </Box>
+  );
+}; 

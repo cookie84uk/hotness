@@ -1,19 +1,33 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Layout } from './components/Layout';
-import { HomePage } from './components/HomePage';
-import { ProfilePage } from './components/ProfilePage';
+import { Suspense } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material/styles';
+import { CssBaseline, CircularProgress, Box } from '@mui/material';
+import { theme } from './theme';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { MainLayout } from './layouts/MainLayout';
+import { DashboardDefault } from './components/DashboardDefault';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-        </Routes>
-      </Layout>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <ErrorBoundary>
+        <Suspense
+          fallback={
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+              <CircularProgress />
+            </Box>
+          }
+        >
+          <Routes>
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<Navigate to="/dashboard" />} />
+              <Route path="/dashboard" element={<DashboardDefault />} />
+            </Route>
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
+    </ThemeProvider>
   );
 }
 

@@ -1,9 +1,12 @@
-import { Box, styled } from '@mui/material';
+import { Box } from '@mui/material';
+import { Outlet } from 'react-router-dom';
 
-const MainContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  backgroundColor: themeConfig.dark.default,
-  minHeight: '100vh',
-  padding: theme.spacing(2),
-})); 
+export const MainLayout = () => {
+  return (
+    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Outlet />
+      </Box>
+    </Box>
+  );
+}; 

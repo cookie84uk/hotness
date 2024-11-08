@@ -1,35 +1,23 @@
 import { Dialog } from './ui/dialog';
+import { Button } from './ui/button';
+import { MINIMUM_TOKENS } from '../constants';
+import { Box, Typography } from '@mui/material';
 
-interface TokenGateModalProps {
-  open: boolean;
-  onClose: () => void;
-}
-
-export const TokenGateModal = ({ open, onClose }: TokenGateModalProps) => {
+export const TokenGateModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <div className="p-6 space-y-4">
-        <h2 className="text-xl font-bold">🔒 Degen Mode Locked</h2>
-        
-        <div className="space-y-2">
-          <p>Hold {MINIMUM_TOKENS} tokens to unlock Degen Mode features:</p>
-          <ul className="list-disc list-inside space-y-1">
-            <li>Faster signals</li>
-            <li>Micro-cap gems</li>
-            <li>Higher risk tolerance</li>
-            <li>Advanced metrics</li>
-          </ul>
-        </div>
-
-        <div className="flex gap-4 mt-6">
+    <Dialog open={open} onClose={onClose}>
+      <Box p={3}>
+        <Typography variant="h5">Unlock Degen Mode</Typography>
+        <Typography>Hold {MINIMUM_TOKENS} tokens to unlock Degen Mode features:</Typography>
+        <Box mt={2} display="flex" gap={2}>
           <Button onClick={() => window.open('YOUR_DEX_LINK', '_blank')}>
             Buy Tokens
           </Button>
-          <Button variant="outline" onClick={onClose}>
-            Stay in Normie Mode
+          <Button variant="outlined" onClick={onClose}>
+            Close
           </Button>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </Dialog>
   );
 }; 

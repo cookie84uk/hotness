@@ -1,8 +1,8 @@
 import { lazy } from 'react';
-import MainLayout from 'layout/MainLayout';
-import Loadable from 'components/Loadable';
+import { MainLayout } from '../layouts/MainLayout';
+import { Navigate } from 'react-router-dom';
 
-const HotnessDashboard = Loadable(lazy(() => import('pages/dashboard/hotness/HotnessDashboard')));
+const DashboardDefault = lazy(() => import('../components/DashboardDefault'));
 
 const MainRoutes = {
   path: '/',
@@ -10,15 +10,11 @@ const MainRoutes = {
   children: [
     {
       path: '/',
-      element: <DashboardDefault />
+      element: <Navigate to="/dashboard" />
     },
     {
-      path: 'dashboard/default',
+      path: 'dashboard',
       element: <DashboardDefault />
-    },
-    {
-      path: 'dashboard/hotness',
-      element: <HotnessDashboard />
     }
   ]
 };
