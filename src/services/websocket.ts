@@ -1,4 +1,6 @@
 import { TokenData, WhaleActivity } from '../types/common';
+import { hotnessScoreService } from './hotnessScore';
+import { eventEmitter } from '../utils/eventEmitter';
 
 class WebSocketService {
   private ws: WebSocket | null = null;
@@ -50,8 +52,30 @@ class WebSocketService {
   }
 
   private handleTokenUpdate(data: TokenData): void {
-    // Implement token update logic
-    console.log('Token update received:', data);
+    try {
+      // Calculate hotness score
+      const hotnessScore = hotnessScoreService.calculateScore({
+        price: data.price,
+        volume: data.volume,
+        holders: data.holders || 0,
+        change24h: data.change24h
+      });
+
+      // Combine token data with hotness score
+      const enrichedData = {
+        ...data,
+        hotnessScore
+      };
+
+      // Emit the enriched data for components to consume
+      eventEmitter.emit('tokenUpdate', enrichedData);
+      
+      // If you want to track historical scores
+      hotnessScoreService.addHistoricalScore(data.mint, hotnessScore);
+
+    } catch (error) {
+      console.error('Error processing token update:', error);
+    }
   }
 
   private handleWhaleActivity(data: WhaleActivity): void {

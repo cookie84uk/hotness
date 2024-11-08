@@ -1,17 +1,16 @@
 import { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material/styles';
-import { CssBaseline, CircularProgress, Box } from '@mui/material';
-import { theme } from './theme';
+import { Box, CircularProgress } from '@mui/material';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { MainLayout } from './layouts/MainLayout';
 import { DashboardDefault } from './components/DashboardDefault';
 
 function App() {
+  console.log('App rendering');
+
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <ErrorBoundary>
+    <ErrorBoundary>
+      <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
         <Suspense
           fallback={
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -20,14 +19,14 @@ function App() {
           }
         >
           <Routes>
-            <Route element={<MainLayout />}>
-              <Route path="/" element={<Navigate to="/dashboard" />} />
-              <Route path="/dashboard" element={<DashboardDefault />} />
+            <Route path="/" element={<MainLayout />}>
+              <Route index element={<Navigate to="/dashboard" replace />} />
+              <Route path="dashboard" element={<DashboardDefault />} />
             </Route>
           </Routes>
         </Suspense>
-      </ErrorBoundary>
-    </ThemeProvider>
+      </Box>
+    </ErrorBoundary>
   );
 }
 

@@ -1,13 +1,11 @@
 export interface TokenData {
-  address: string;
+  mint: string;
   symbol: string;
-  name: string;
   price: number;
-  volume24h: number;
-  marketCap: number;
+  volume: number;
   change24h: number;
-  holders: number;
-  createdAt: string;
+  holders?: number;
+  hotnessScore: number;
 }
 
 export interface WhaleActivity {

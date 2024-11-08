@@ -1,64 +1,26 @@
-import { Box, Typography, CircularProgress } from '@mui/material';
-import { motion } from 'framer-motion';
-import { TokenData } from '../types';
+import React from 'react';
+import { useTokenData } from '../hooks/useTokenData';
+import { HotMeter } from './HotMeter';
 
-const MotionBox = motion(Box);
-
-interface HotnessDisplayProps {
-  token: TokenData;
-  size?: 'small' | 'medium' | 'large';
+interface Props {
+  mint: string;
 }
 
-export const HotnessDisplay = ({ token, size = 'medium' }: HotnessDisplayProps) => {
-  const getColor = (score: number) => {
-    if (score >= 80) return '#ff0000';  // Hot red
-    if (score >= 60) return '#ff6b00';  // Orange
-    if (score >= 40) return '#ffd700';  // Gold
-    return '#666666';  // Cool gray
-  };
+export const HotnessDisplay: React.FC<Props> = ({ mint }) => {
+  const { tokenData, loading } = useTokenData(mint);
+  const token = tokenData[0]; // Since we're filtering by mint, there will only be one
 
-  const dimensions = {
-    small: { width: 40, fontSize: 12 },
-    medium: { width: 60, fontSize: 16 },
-    large: { width: 80, fontSize: 20 },
-  }[size];
+  if (loading) return <div>Loading...</div>;
+  if (!token) return <div>No data available</div>;
 
   return (
-    <MotionBox
-      initial={{ scale: 0.8 }}
-      animate={{ 
-        scale: token.hotness >= 80 ? [1, 1.1, 1] : 1,
-      }}
-      transition={{ 
-        duration: 0.5,
-        repeat: token.hotness >= 80 ? Infinity : 0,
-      }}
-    >
-      <Box position="relative" display="inline-flex">
-        <CircularProgress
-          variant="determinate"
-          value={token.hotness}
-          size={dimensions.width}
-          thickness={5}
-          sx={{ color: getColor(token.hotness) }}
-        />
-        <Box
-          position="absolute"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          width={dimensions.width}
-          height={dimensions.width}
-        >
-          <Typography
-            variant="caption"
-            fontSize={dimensions.fontSize}
-            color="textSecondary"
-          >
-            {Math.round(token.hotness)}
-          </Typography>
-        </Box>
-      </Box>
-    </MotionBox>
+    <div>
+      <HotMeter score={token.hotnessScore} />
+      <div>
+        <div>Price: ${token.price.toFixed(4)}</div>
+        <div>24h Change: {token.change24h.toFixed(2)}%</div>
+        <div>Volume: ${token.volume.toLocaleString()}</div>
+      </div>
+    </div>
   );
 }; 
